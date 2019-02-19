@@ -61415,6 +61415,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 var MegaSimpleDndListDirective = /** @class */ (function () {
     function MegaSimpleDndListDirective() {
+        this.hoverStyle = 'hover';
+        this.dragStyle = 'draggin';
         this.dropped = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
         this.draggable = true;
     }
@@ -61428,6 +61430,43 @@ var MegaSimpleDndListDirective = /** @class */ (function () {
      */
     function ($event) {
         $event.dataTransfer.setData('indexSource', this.index.toString());
+        $event.srcElement.classList.add(this.dragStyle);
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    MegaSimpleDndListDirective.prototype.dragend = /**
+     * @param {?} $event
+     * @return {?}
+     */
+    function ($event) {
+        $event.srcElement.classList.remove(this.dragStyle);
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    MegaSimpleDndListDirective.prototype.dragenter = /**
+     * @param {?} $event
+     * @return {?}
+     */
+    function ($event) {
+        if (!$event.srcElement.classList.contains(this.dragStyle)) { // Only add the hoverStyle to the other elements
+            $event.srcElement.classList.add(this.hoverStyle);
+        }
+        $event.preventDefault();
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    MegaSimpleDndListDirective.prototype.dragleave = /**
+     * @param {?} $event
+     * @return {?}
+     */
+    function ($event) {
+        $event.srcElement.classList.remove(this.hoverStyle);
     };
     /**
      * @param {?} $event
@@ -61439,6 +61478,7 @@ var MegaSimpleDndListDirective = /** @class */ (function () {
      */
     function ($event) {
         var _a;
+        $event.srcElement.classList.remove(this.hoverStyle);
         /** @type {?} */
         var indexSource = Number($event.dataTransfer.getData('indexSource'));
         _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])([this.items[this.index], this.items[indexSource]], 2), this.items[indexSource] = _a[0], this.items[this.index] = _a[1];
@@ -61454,7 +61494,7 @@ var MegaSimpleDndListDirective = /** @class */ (function () {
      * @return {?}
      */
     function ($event) {
-        $event.preventDefault();
+        $event.preventDefault(); // prevent default to allow drop
     };
     MegaSimpleDndListDirective.decorators = [
         { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
@@ -61466,9 +61506,14 @@ var MegaSimpleDndListDirective = /** @class */ (function () {
     MegaSimpleDndListDirective.propDecorators = {
         items: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
         index: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
+        hoverStyle: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
+        dragStyle: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] }],
         dropped: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] }],
         draggable: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"] }],
         dragstart: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['dragstart', ['$event'],] }],
+        dragend: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['dragend', ['$event'],] }],
+        dragenter: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['dragenter', ['$event'],] }],
+        dragleave: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['dragleave', ['$event'],] }],
         drop: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['drop', ['$event'],] }],
         dragover: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['dragover', ['$event'],] }]
     };
